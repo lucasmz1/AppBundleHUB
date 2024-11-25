@@ -1,0 +1,1 @@
+pelfCreator -m "lucasmz1" -n "libreoffice" -p "libreoffice" -e "startcenter.desktop"
