@@ -1,1 +1,1 @@
-pelfCreator -m "lucasmz1" -n "libreoffice" -p "libreoffice" -e "libreoffice.desktop"
+pelfCreator -m "lucasmz1" -n "libreoffice" -p "libreoffice" -e "libreoffice-writer.desktop"
