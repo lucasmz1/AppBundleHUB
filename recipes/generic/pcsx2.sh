@@ -1,1 +1,1 @@
-pelfCreator -m "lucasmz1" -n "pcsx2-qt" -p "pcsx2-qt" -e "net.pcsx2.PCSX2.desktop"
+pelfCreator -m "lucasmz1" -n "pcsx2-qt" -p "pcsx2-qt" -e "pcsx2.desktop"
