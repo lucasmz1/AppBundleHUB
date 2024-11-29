@@ -1,1 +1,1 @@
-armhf pelfCreator -m "lucasmz1" -n "libreoffice" -p "libreoffice" -e "libreoffice7.6"
+ARCH=armhf arch_armhf pelfCreator -m "lucasmz1" -n "libreoffice" -p "libreoffice" -e "libreoffice7.6"
