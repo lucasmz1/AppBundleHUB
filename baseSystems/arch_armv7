@@ -13,7 +13,7 @@ trap 'cd "$OPWD"' INT EXIT
 
 [ ! -f "rootfs.tgz" ] && [ -z "$NO_DOWNLOAD" ] && {
     wget "https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/armv7/alpine-minirootfs-3.20.3-armv7.tar.gz" && {
-		tar xvf "alpine-minirootfs-3.20.3-armv7.tar.gz" && cp /etc/resolv.conf "$GITHUB_WORKSPACE/etc/" && {
+		tar xvf "alpine-minirootfs-3.20.3-armv7.tar.gz" && cp /etc/resolv.conf "./etc/" && {
 			mv "alpine-minirootfs-3.20.3-armv7.tar.gz" "rootfs.tgz"
 			# ---
 			if ! wget -qO "AppRun.rootfs" "https://github.com/xplshn/pelf/raw/refs/heads/pelf-ng/assets/AppRun.rootfs-based"; then
