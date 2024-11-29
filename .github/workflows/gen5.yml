@@ -73,6 +73,7 @@ jobs:
         run: |
           ls "$GITHUB_WORKSPACE/baseSystems"
           set -x
+          chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armhf"
           export PATH="$GITHUB_WORKSPACE/baseSystems:$PATH"
           echo "PATH=$PATH" >> $GITHUB_ENV
           cd $OUT_DIR
