@@ -48,6 +48,7 @@ jobs:
         run: |
           set -x
           chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armhf"
+          chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armv7"
           export GOBIN="$GITHUB_WORKSPACE/.local/bin"
           mkdir -p "$GOBIN"
           echo "GOBIN=$GOBIN" >> $GITHUB_ENV
