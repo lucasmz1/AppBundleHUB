@@ -1,1 +1,1 @@
-AUR=1 arch_armhf pelfCreator -m "lucasmz1" -n "libreoffice" -p "libreoffice" -e "libreoffice7.6" --dontpack
+AUR=1 arch_armv7 pelfCreator -m "lucasmz1" -n "libreoffice" -p "libreoffice" -e "libreoffice7.6"
