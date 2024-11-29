@@ -47,6 +47,7 @@ jobs:
       - name: Set up GOBIN and install lib4bin
         run: |
           set -x
+          chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armhf"
           export GOBIN="$GITHUB_WORKSPACE/.local/bin"
           mkdir -p "$GOBIN"
           echo "GOBIN=$GOBIN" >> $GITHUB_ENV
@@ -73,7 +74,6 @@ jobs:
         run: |
           ls "$GITHUB_WORKSPACE/baseSystems"
           set -x
-          chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armhf"
           export PATH="$GITHUB_WORKSPACE/baseSystems:$PATH"
           echo "PATH=$PATH" >> $GITHUB_ENV
           cd $OUT_DIR
