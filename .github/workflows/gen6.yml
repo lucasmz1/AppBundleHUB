@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     container:
-      image: "docker.io/azathothas/appbundler-alpine:latest"
+      image: "arm32v7/alpine:latest"
       options: --privileged
 
     steps:
