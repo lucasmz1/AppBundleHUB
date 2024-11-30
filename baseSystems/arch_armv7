@@ -12,9 +12,9 @@ trap 'cd "$OPWD"' INT EXIT
 #mkdir -p ./ArchLinux_localResources && cd ./ArchLinux_localResources
 
 [ ! -f "rootfs.tgz" ] && [ -z "$NO_DOWNLOAD" ] && {
-    wget "http://fl.us.mirror.archlinuxarm.org/os/ArchLinuxARM-armv7-latest.tar.gz" && {
-		tar xvf "ArchLinuxARM-armv7-latest.tar.gz" && cp /etc/resolv.conf "./etc/" && {
-			mv "ArchLinuxARM-armv7-latest.tar.gz" "rootfs.tgz"
+    wget "https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/armv7/alpine-minirootfs-3.20.3-armv7.tar.gz" && {
+		tar xvf "alpine-minirootfs-3.20.3-armv7.tar.gz" && cp /etc/resolv.conf "./etc/" && {
+			mv "alpine-minirootfs-3.20.3-armv7.tar.gz" "rootfs.tgz"
 			# ---
 			if ! wget -qO "AppRun.rootfs" "https://github.com/xplshn/pelf/raw/refs/heads/pelf-ng/assets/AppRun.rootfs-based"; then
 				error "Unable to download AppRun.rootfs-based and add it as ./AppRun.rootfs"
