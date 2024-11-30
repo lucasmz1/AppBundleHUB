@@ -35,7 +35,7 @@ jobs:
 
       - name: Pull ARM Image
         run: |
-          docker buildx build --platform linux/arm/v7 --tag arm32v7/alpine:edge --pull --load .
+          docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
 
       - name: Checkout repository
         uses: actions/checkout@v4
