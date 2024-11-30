@@ -91,7 +91,8 @@ jobs:
               DEBUG=1 "$script"
             fi
           done
-          tar -cJvf my.tar.xz "$GITHUB_WORKSPACE/AppDir"
+          cd "$GITHUB_WORSPACE"
+          tar -cJvf AppDir.tar.xz "$GITHUB_WORKSPACE/AppDir"
       - name: Generate metadata
         run: |
           set -x
