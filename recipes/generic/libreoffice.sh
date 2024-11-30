@@ -1,1 +1,1 @@
-pelfCreator --maintainer lucasmz1 --name libreoffice --pkg-add libreoffice --entrypoint libreoffice --dontpack ROOTFS_URL:=https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/armv7/alpine-minirootfs-3.20.3-armv7.tar.gz
+ROOTFS_URL:=https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/armv7/alpine-minirootfs-3.20.3-armv7.tar.gz pelfCreator --maintainer lucasmz1 --name libreoffice --pkg-add libreoffice --entrypoint libreoffice --dontpack
