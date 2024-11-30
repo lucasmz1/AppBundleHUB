@@ -92,7 +92,7 @@ jobs:
             fi
           done
           cd "$GITHUB_WORSPACE"
-          tar -cJvf AppDir.tar.xz "$GITHUB_WORKSPACE/AppDir"
+          tar vcf appdir.tar.xz "$GITHUB_WORKSPACE/AppDir"
       - name: Generate metadata
         run: |
           set -x
