@@ -33,12 +33,9 @@ jobs:
           docker buildx create --name mybuilder --use
           docker buildx inspect --bootstrap
 
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Build ARM Image
+      - name: Pull ARM Image
         run: |
-          docker buildx build --platform linux/arm/v7 --file ./Dockerfile --tag custom-arm-image .
+          docker pull arm32v7/alpine:edge
 
       - name: Checkout repository
         uses: actions/checkout@v4
