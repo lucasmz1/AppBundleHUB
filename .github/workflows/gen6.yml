@@ -31,7 +31,6 @@ jobs:
         run: |
           docker pull arm32v7/alpine:3.20.3
 
-steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
