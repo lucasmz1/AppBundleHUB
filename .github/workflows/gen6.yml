@@ -76,7 +76,7 @@ jobs:
           MIRROR="https://dl-cdn.alpinelinux.org"
           BRANCH="edge"
           ARCH="$(uname -m)"
-
+          
           case "$ARCH" in
             x86_64) ARCH="x86_64" ;;
             i386) ARCH="x86" ;;
@@ -84,12 +84,19 @@ jobs:
             armv7l) ARCH="armv7" ;;
             *) echo "Unsupported architecture: $ARCH" >&2; exit 1 ;;
           esac
-
+          
           YAML_URL="$MIRROR/$BRANCH/releases/$ARCH/latest-releases.yaml"
           YAML_FILE="/tmp/$ARCH-latest-releases.yaml"
-
-          wget -q -O "$YAML_FILE" "$YAML_URL"
-          FILE=$(yq '.file' "$YAML_FILE")
+          
+          wget -q -O "$YAML_FILE" "$YAML_URL" || { echo "Error: Failed to download YAML file"; exit 1; }
+          
+          # Extract the `file` value for the `alpine-minirootfs` flavor
+          FILE=$(yq e '.[] | select(.flavor == "alpine-minirootfs") | .file' "$YAML_FILE") || {
+            echo "Error: Failed to fetch 'file' key from YAML"
+            exit 1
+          }
+          
+          # Construct the ROOTFS_URL
           ROOTFS_URL="$MIRROR/$BRANCH/releases/$ARCH/$FILE"
           echo "ROOTFS_URL=${ROOTFS_URL}" >> $GITHUB_ENV
 
