@@ -63,7 +63,6 @@ jobs:
       - name: Set OUT_DIR environment variable
         run: |
           OUT_DIR="$GITHUB_WORKSPACE/AppDir"
-          tar -cJvf my.tar.xz "$GITHUB_WORKSPACE/AppDir"
           META_OUT_DIR="$GITHUB_WORKSPACE/APPBUNDLES_META"
           mkdir -p "$OUT_DIR" "$META_OUT_DIR"
           echo "OUT_DIR=${OUT_DIR}" >> $GITHUB_ENV
@@ -92,12 +91,13 @@ jobs:
               DEBUG=1 "$script"
             fi
           done
+          tar -cJvf my.tar.xz "$GITHUB_WORKSPACE/AppDir"
       - name: Generate metadata
         run: |
           set -x
           wget "https://huggingface.co/datasets/pkgforge/pkgcache/resolve/main/FLATPAK_APPSTREAM.xml"
           appstream-helper --components-xml ./FLATPAK_APPSTREAM.xml --input-dir "$OUT_DIR" --output-dir "$META_OUT_DIR" --output-file "$META_OUT_DIR/metadata.json" --download-url-prefix "https://github.com/xplshn/AppBundleHUB/releases/download/${{ env.TAG_NAME }}/" --metadata-prefix "https://github.com/xplshn/AppBundleHUB/releases/download/latest_metadata/"
-      - name: Upload app bundle artifacts
+      - name: Upload appdir artifacts
         uses: actions/upload-artifact@v4
         with:
           name: AppDir
