@@ -35,7 +35,7 @@ jobs:
 
       - name: Pull ARM Image
         run: |
-          docker pull arm32v7/alpine:edge
+          docker pull arm32v7/alpine
 
       - name: Checkout repository
         uses: actions/checkout@v4
