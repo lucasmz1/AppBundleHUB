@@ -47,7 +47,6 @@ jobs:
       - name: Set up GOBIN and install lib4bin
         run: |
           set -x
-          export ROOTFS_URL:=https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/armv7/alpine-minirootfs-3.20.3-armv7.tar.gz
           chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armv7"
           export GOBIN="$GITHUB_WORKSPACE/.local/bin"
           mkdir -p "$GOBIN"
