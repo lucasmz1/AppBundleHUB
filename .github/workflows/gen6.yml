@@ -47,7 +47,6 @@ jobs:
       - name: Set up GOBIN and install lib4bin
         run: |
           set -x
-          chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armhf"
           chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armv7"
           export GOBIN="$GITHUB_WORKSPACE/.local/bin"
           mkdir -p "$GOBIN"
@@ -91,8 +90,6 @@ jobs:
               DEBUG=1 "$script"
             fi
           done
-          cd "$GITHUB_WORSPACE"
-          tar vcf appdir.tar.xz "$GITHUB_WORKSPACE/AppDir"
       - name: Generate metadata
         run: |
           set -x
@@ -229,7 +226,7 @@ jobs:
           name: "Latest Metadata"
           tag_name: "latest_metadata"
           files: |
-            ${{ github.workspace }}/*.tar.xz
+            ${{ github.workspace }}/*.zip
             ${{ github.workspace }}/*.png
             ${{ github.workspace }}/*.svg
             ${{ github.workspace }}/*.desktop
