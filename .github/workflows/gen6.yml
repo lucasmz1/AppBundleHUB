@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     container:
-      image: "arm32v7/alpine:latest"
+      image: "arm32v7/alpine:edge"
       options: --privileged
 
     steps:
