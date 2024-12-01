@@ -35,8 +35,7 @@ jobs:
       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-          docker run --rm --platform=linux/arm/v7 --name temp-container arm32v7/alpine:edge sh -c "apk update && apk add --no-cache tar wget"
-          options: --privileged
+          docker run --rm --privileged --platform=linux/arm/v7 --name temp-container arm32v7/alpine:edge sh -c "apk update && apk add --no-cache tar wget"
 
       - name: Checkout repository
         uses: actions/checkout@v4
