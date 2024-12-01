@@ -1,1 +1,1 @@
-pelfCreator -m "lucasmz1" -n "org.mozilla.firefox" -p "firefox" -e "firefox.desktop" arch_armv7
+AUR=1 arch_armv7 pelfCreator -m "lucasmz1" -n "org.mozilla.firefox" -p "firefox" -e "firefox.desktop"
