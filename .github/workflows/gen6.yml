@@ -37,6 +37,22 @@ jobs:
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
           docker run --rm --privileged --platform=linux/arm/v7 --name temp-container arm32v7/alpine:edge sh -c "apk update && apk add --no-cache tar wget"
           set -x
+          export PATH="$GITHUB_WORKSPACE/baseSystems:$PATH"
+          echo "PATH=$PATH" >> $GITHUB_ENV
+          cd $OUT_DIR
+          SCRIPT_PATTERN="${{ github.event.inputs.script_pattern }}"
+          if [ -z "$SCRIPT_PATTERN" ]; then
+            echo "No script pattern provided, running all scripts."
+            PATTERN=".*"
+          else
+            PATTERN="$SCRIPT_PATTERN"
+          fi
+          for script in "$GITHUB_WORKSPACE/recipes/"*/*.*sh; do
+            if echo "$script" | grep -E "$PATTERN"; then
+              chmod +x "$script"
+              DEBUG=1 "$script"
+            fi
+          done
           chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armv7"
           chmod +x "$GITHUB_WORKSPACE/baseSystems/arch_armhf"
           export GOBIN="$GITHUB_WORKSPACE/.local/bin"
@@ -85,23 +101,6 @@ jobs:
           export ROOTFS_URL="https://dl-cdn.alpinelinux.org/alpine/edge/releases/armv7/alpine-minirootfs-20240923-armv7.tar.gz"
           echo "ROOTFS_URL=${ROOTFS_URL}" >> $GITHUB_ENV
                     ls "$GITHUB_WORKSPACE/baseSystems"
-          set -x
-          export PATH="$GITHUB_WORKSPACE/baseSystems:$PATH"
-          echo "PATH=$PATH" >> $GITHUB_ENV
-          cd $OUT_DIR
-          SCRIPT_PATTERN="${{ github.event.inputs.script_pattern }}"
-          if [ -z "$SCRIPT_PATTERN" ]; then
-            echo "No script pattern provided, running all scripts."
-            PATTERN=".*"
-          else
-            PATTERN="$SCRIPT_PATTERN"
-          fi
-          for script in "$GITHUB_WORKSPACE/recipes/"*/*.*sh; do
-            if echo "$script" | grep -E "$PATTERN"; then
-              chmod +x "$script"
-              DEBUG=1 "$script"
-            fi
-          done
 
       - name: Checkout repository
         uses: actions/checkout@v4
