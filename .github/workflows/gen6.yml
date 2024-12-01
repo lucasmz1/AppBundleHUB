@@ -22,9 +22,6 @@ jobs:
         uses: docker/setup-qemu-action@v3
         with:
           platforms: linux/arm/v7
-      - name: Check and Ignore Permission Error
-        run: |
-          ls /home/runner/work/AppBundleHUB/AppBundleHUB/AppDir/libreoffice-01_12_2024.AppDir/proto/var/run/chrony || true
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
@@ -38,8 +35,8 @@ jobs:
       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-          options: --privileged
           docker run --rm --platform=linux/arm/v7 --name temp-container arm32v7/alpine:edge sh -c "apk update && apk add --no-cache tar wget"
+          options: --privileged
 
       - name: Checkout repository
         uses: actions/checkout@v4
