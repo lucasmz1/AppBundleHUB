@@ -111,7 +111,7 @@ jobs:
           }
           
           # Construct the ROOTFS_URL
-          ROOTFS_URL="$MIRROR/$BRANCH/releases/$ARCH/$FILE"
+          ROOTFS_URL="https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/armv7/alpine-minirootfs-3.20.3-armv7.tar.gz"
           echo "ROOTFS_URL=${ROOTFS_URL}" >> $GITHUB_ENV
 
       - name: List available scripts
