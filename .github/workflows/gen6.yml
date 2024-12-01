@@ -22,7 +22,9 @@ jobs:
         uses: docker/setup-qemu-action@v3
         with:
           platforms: linux/arm/v7
-
+      - name: Check and Ignore Permission Error
+        run: |
+          ls /home/runner/work/AppBundleHUB/AppBundleHUB/AppDir/libreoffice-01_12_2024.AppDir/proto/var/run/chrony || true
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
