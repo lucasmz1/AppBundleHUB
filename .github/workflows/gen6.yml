@@ -89,7 +89,7 @@ jobs:
         run: |
           MIRROR="https://dl-cdn.alpinelinux.org"
           BRANCH="edge"
-          ARCH=armv7
+          ARCH=$(uname -m)
           
           case "$ARCH" in
             x86_64) ARCH="x86_64" ;;
