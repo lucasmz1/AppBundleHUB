@@ -46,7 +46,7 @@ jobs:
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
           ls -R ./pelf && \
           cp -R ./pelf/* \$GOBIN || true && \
-          cd ./pelf/cmd/dynexec/lib4bin && \
+          find -iname 'lib4bin' -type d | xargs -i -t -exec cd {} && \
           go install . && \
           cd - && \
           cd ./pelf/cmd/misc/appstream_helper && \
