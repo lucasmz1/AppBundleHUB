@@ -35,10 +35,9 @@ jobs:
       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir alpine:AppBundleHUB cp /AppBundleHUB/* "$PWD/workdir/" --name temp-container arm32v7/alpine:edge && sh -c "apk update && apk add --no-cache tar wget"
-          chmod +x "workdir/baseSystems/arch_armv7"
-          chmod +x "workdir/baseSystems/arch_armhf"
-          export GOBIN="workdir/.local/bin"
+          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir alpine:AppBundleHUB cp /AppBundleHUB/* "/workdir/" --name temp-container arm32v7/alpine:edge && sh -c "apk update && apk add --no-cache tar wget"
+          find -iname 'arch_armv7' | xargs -i -t -exec chmod +x {}
+          export GOBIN="/workdir/.local/bin"
           mkdir -p "$GOBIN"
           echo "GOBIN=$GOBIN" >> $GITHUB_ENV
           echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
@@ -52,8 +51,8 @@ jobs:
           export DBIN_INSTALL_DIR="$GOBIN"
           echo "DBIN_INSTALL_DIR=$DBIN_INSTALL_DIR" >> $GITHUB_ENV
           wget -qO- "https://raw.githubusercontent.com/xplshn/dbin/master/stubdl" | sh -s -- --install "$DBIN_INSTALL_DIR/dbin" add tar wget yq jq xq
-          ls "$PWD/workdir/baseSystems"
-          export PATH="$PWD/workdir/baseSystems:$PATH"
+          ls "/workdir/baseSystems"
+          export PATH="/workdir/baseSystems:$PATH"
           echo "PATH=$PATH" >> $GITHUB_ENV
           cd $OUT_DIR
           SCRIPT_PATTERN="${{ github.event.inputs.script_pattern }}"
@@ -63,7 +62,7 @@ jobs:
           else
             PATTERN="$SCRIPT_PATTERN"
           fi 
-          for script in "$PWD/workdir/recipes/"*/*.*sh; do
+          for script in "/workdir/recipes/"*/*.*sh; do
             if echo "$script" | grep -E "$PATTERN"; then 
               chmod +x "$script"
               DEBUG=1 "$script"
