@@ -36,9 +36,9 @@ jobs:
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
           docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir alpine:AppBundleHUB cp /AppBundleHUB/* "$PWD/workdir/" --name temp-container arm32v7/alpine:edge && sh -c "apk update && apk add --no-cache tar wget"
-          chmod +x "$PWD/workdir/baseSystems/arch_armv7"
-          chmod +x "$PWD/workdir/baseSystems/arch_armhf"
-          export GOBIN="$PWD/workdir/.local/bin"
+          chmod +x "/workdir/baseSystems/arch_armv7"
+          chmod +x "/workdir/baseSystems/arch_armhf"
+          export GOBIN="/workdir/.local/bin"
           mkdir -p "$GOBIN"
           echo "GOBIN=$GOBIN" >> $GITHUB_ENV
           echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
