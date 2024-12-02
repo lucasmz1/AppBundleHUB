@@ -35,7 +35,7 @@ jobs:
       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir alpine:AppBundleHUB cp /AppBundleHUB/* "/workdir/dist/" --name temp-container arm32v7/alpine:edge && sh -c "apk update && apk add --no-cache tar wget"
+          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir alpine:AppBundleHUB cp /AppBundleHUB/* "/workdir/" --name temp-container arm32v7/alpine:edge && sh -c "apk update && apk add --no-cache tar wget"
           chmod +x "/workdir/baseSystems/arch_armv7"
           chmod +x "/workdir/baseSystems/arch_armhf"
           export GOBIN="/workdir/.local/bin"
