@@ -68,34 +68,14 @@ jobs:
               DEBUG=1 "$script"
             fi
           done
-          EOF
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Generate TAG_NAME
-        id: set_tag_name
-        run: |
           TAG_NAME="v${GITHUB_RUN_NUMBER}-$(date +'%Y%m%d%H%M%S')"
           echo "$TAG_NAME" > tag_name.txt
           echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_ENV
-
-      - name: Upload TAG_NAME artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: tag-name
-          path: tag_name.txt
-
-      - name: Set OUT_DIR environment variable
-        run: |
           OUT_DIR="/workdir/AppDir"
           META_OUT_DIR="/workdir/APPBUNDLES_META"
           mkdir -p "$OUT_DIR" "$META_OUT_DIR"
           echo "OUT_DIR=${OUT_DIR}" >> $GITHUB_ENV
           echo "META_OUT_DIR=${META_OUT_DIR}" >> $GITHUB_ENV
-
-      - name: Set ROOTFS_URL environment variable
-        run: |
           MIRROR="https://dl-cdn.alpinelinux.org"
           BRANCH="edge"
           ARCH=$(uname -m)
@@ -122,6 +102,16 @@ jobs:
           # Construct the ROOTFS_URL
           ROOTFS_URL="https://dl-cdn.alpinelinux.org/alpine/v3.20/releases/armv7/alpine-minirootfs-3.20.3-armv7.tar.gz"
           echo "ROOTFS_URL=${ROOTFS_URL}" >> $GITHUB_ENV
+          EOF
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload TAG_NAME artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tag-name
+          path: tag_name.txt
 
       - name: List available scripts
         run: |
