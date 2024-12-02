@@ -46,7 +46,7 @@ jobs:
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
           ls -R ./pelf && \
           cp -R ./pelf/* \$GOBIN || true && \
-          cp ./pelf/* "$GOBIN" || true
+          cp ./pelf/* \$GOBIN || true
           cd ./pelf/cmd/dynexec/lib4bin && \
           go install . && \
           cd - && \
