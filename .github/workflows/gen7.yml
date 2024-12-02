@@ -35,14 +35,14 @@ jobs:
       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge cp -a /AppBundleHUB/* "/workdir/" cat <<'EOF' --name temp-container arm32v7/alpine:edge && sh -c "apk update && apk add --no-cache tar wget"
+          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge cp -a /AppBundleHUB/* "/workdir/" --name temp-container arm32v7/alpine:edge && sh -c "apk update && apk add --no-cache tar wget cat && cat <<'EOF'" 
           >find -iname 'arch_armv7' | xargs -i -t -exec chmod +x {}
           export GOBIN="/workdir/.local/bin"
           mkdir -p "$GOBIN"
           echo "GOBIN=$GOBIN" >> $GITHUB_ENV
           echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf
-          cp -Ra ./pelf/* "$GOBIN" || true
+          cp -R ./pelf/* "$GOBIN" || true
           cd ./pelf/cmd/dynexec/lib4bin
           go install .
           cd -
