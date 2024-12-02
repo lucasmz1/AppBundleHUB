@@ -40,7 +40,7 @@ jobs:
           set -e && \
           apk update && \
           apk add --no-cache tar wget findutils binutils git curl go && \
-          find -iname 'arch_armv7' | xargs -i -t -exec chmod +x {} && \
+          find -iname 'arch_armv7' | tee /dev/stderr | xargs -i -t -exec chmod +x {} && \
           mkdir -p /workdir/.local/bin
           export GOBIN='/workdir/.local/bin'
           echo "GOBIN=$GOBIN" >> $GITHUB_ENV
