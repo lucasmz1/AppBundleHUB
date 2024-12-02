@@ -43,17 +43,17 @@ jobs:
           find -iname 'arch_armv7' | tee /dev/stderr | xargs -i -t -exec chmod +x {} && \
           mkdir -p ${GITHUB_WORKSPACE}.local/bin
           export GOBIN='${GITHUB_WORKSPACE}.local/bin'
-          #echo "GOBIN=$GOBIN" >> $GITHUB_ENV
-          #echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
+          echo "GOBIN=$GOBIN" >> $GITHUB_ENV
+          echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
           ls -R ./pelf && \
           cp -R ./pelf/* \$GOBIN || true && \
           cp ./pelf/* \$GOBIN || true
           cd ./pelf/cmd/dynexec/lib4bin && \
-          go install . && \
+          go install \$GOBIN && \
           cd - && \
           cd ./pelf/cmd/misc/appstream_helper && \
-          go install . && \
+          go install \$GOBIN && \
           export DBIN_INSTALL_DIR='\$GOBIN' && \
           echo 'DBIN_INSTALL_DIR=\$DBIN_INSTALL_DIR' >> \$GITHUB_ENV && \
           wget -qO- 'https://raw.githubusercontent.com/xplshn/dbin/master/stubdl' | sh -s -- --install \$DBIN_INSTALL_DIR/dbin add tar wget yq jq xq && \
