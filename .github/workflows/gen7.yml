@@ -39,10 +39,10 @@ jobs:
           apk update && \
           apk add --no-cache tar wget findutils binutils go && \
           find -iname 'arch_armv7' | xargs -i -t -exec chmod +x {} && \
-          export GOBIN='/workdir/.local/bin' && \
-          mkdir -p \$GOBIN && \
-          echo 'GOBIN=\$GOBIN' >> \$GITHUB_ENV && \
-          echo 'PATH=\$GOBIN:\$PATH' >> \$GITHUB_ENV && \
+          mkdir -p /workdir/.local/bin
+          export GOBIN='/workdir/.local/bin'
+          echo "GOBIN=$GOBIN" >> $GITHUB_ENV
+          echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
           ls -R ./pelf && \
           cp -R ./pelf/* \$GOBIN || true && \
