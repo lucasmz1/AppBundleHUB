@@ -35,8 +35,8 @@ jobs:
       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge cp -a /AppBundleHUB/* "/workdir/" --name temp-container arm32v7/alpine:edge && sh -c "mkdir -p "$PWD/workdir/" && apk update && apk add --no-cache tar wget"
-          find -iname 'arch_armv7' | xargs -i -t -exec chmod +x {}
+          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge cp -a /AppBundleHUB/* "/workdir/" cat <<'EOF' --name temp-container arm32v7/alpine:edge && sh -c "apk update && apk add --no-cache tar wget"
+          >find -iname 'arch_armv7' | xargs -i -t -exec chmod +x {}
           export GOBIN="/workdir/.local/bin"
           mkdir -p "$GOBIN"
           echo "GOBIN=$GOBIN" >> $GITHUB_ENV
@@ -68,6 +68,7 @@ jobs:
               DEBUG=1 "$script"
             fi
           done
+          EOF
 
       - name: Checkout repository
         uses: actions/checkout@v4
