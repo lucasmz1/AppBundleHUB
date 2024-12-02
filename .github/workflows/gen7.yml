@@ -35,7 +35,7 @@ jobs:
       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge sh -c "
+          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge sh -c " set -x
           apk update && \
           apk add --no-cache tar wget findutils binutils git curl go && \
           find -iname 'arch_armv7' | xargs -i -t -exec chmod +x {} && \
