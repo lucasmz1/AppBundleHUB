@@ -43,8 +43,8 @@ jobs:
           find -iname 'arch_armv7' | tee /dev/stderr | xargs -i -t -exec chmod +x {} && \
           #mkdir -p /workdir/.local/bin
           export GOBIN='/workdir/.local/bin'
-          echo "GOBIN=$GOBIN" >> $GITHUB_ENV
-          echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
+          #echo "GOBIN=$GOBIN" >> $GITHUB_ENV
+          #echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
           ls -R ./pelf && \
           cp -R ./pelf/* \$GOBIN || true && \
