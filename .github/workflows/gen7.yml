@@ -36,14 +36,14 @@ jobs:
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
           docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge sh -c "
-          export HOME=/workdir
+          export HOME2=/workdir
           set -x && \
           set -e && \
           apk update && \
           apk add --no-cache tar wget findutils binutils git curl go && \
           find -iname 'arch_armv7' | tee /dev/stderr | xargs -i -t -exec chmod +x {} && \
-          mkdir -p $HOME/.local/bin
-          export GOBIN='$HOME/.local/bin'
+          mkdir -p $HOME2/.local/bin
+          export GOBIN='$HOME2/.local/bin'
           echo "GOBIN=$GOBIN"
           echo "PATH=$GOBIN:$PATH"
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
@@ -58,8 +58,8 @@ jobs:
           export DBIN_INSTALL_DIR='\$GOBIN' && \
           echo 'DBIN_INSTALL_DIR=\$DBIN_INSTALL_DIR' && \
           wget -qO- 'https://raw.githubusercontent.com/xplshn/dbin/master/stubdl' | sh -s -- --install \$DBIN_INSTALL_DIR/dbin add tar wget yq jq xq && \
-          ls '/$HOME/baseSystems' && \
-          export PATH='/$HOME/baseSystems:\$PATH' && \
+          ls '/$HOME2/baseSystems' && \
+          export PATH='/$HOME2/baseSystems:\$PATH' && \
           echo 'PATH=\$PATH' && \
           cd \$OUT_DIR && \
           SCRIPT_PATTERN=\"\${{ github.event.inputs.script_pattern }}\" && \
@@ -69,7 +69,7 @@ jobs:
           else \
           PATTERN='\$SCRIPT_PATTERN' ; \
           fi && \
-          for script in '/$HOME/recipes/'*/*.*sh; do \
+          for script in '/$HOME2/recipes/'*/*.*sh; do \
           if echo \"\$script\" | grep -E \"\$PATTERN\"; then \
           chmod +x \"\$script\" && \
           DEBUG=1 \"\$script\" ; \
