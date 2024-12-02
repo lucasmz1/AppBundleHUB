@@ -35,14 +35,14 @@ jobs:
       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge sh -c "
+          docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/${GITHUB_WORKSPACE} arm32v7/alpine:edge sh -c "
           set -x && \
           set -e && \
           apk update && \
           apk add --no-cache tar wget findutils binutils git curl go && \
           find -iname 'arch_armv7' | tee /dev/stderr | xargs -i -t -exec chmod +x {} && \
-          #mkdir -p /workdir/.local/bin
-          export GOBIN='/workdir/.local/bin'
+          mkdir -p ${GITHUB_WORKSPACE}.local/bin
+          export GOBIN='${GITHUB_WORKSPACE}.local/bin'
           #echo "GOBIN=$GOBIN" >> $GITHUB_ENV
           #echo "PATH=$GOBIN:$PATH" >> $GITHUB_ENV
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
@@ -57,8 +57,8 @@ jobs:
           export DBIN_INSTALL_DIR='\$GOBIN' && \
           echo 'DBIN_INSTALL_DIR=\$DBIN_INSTALL_DIR' >> \$GITHUB_ENV && \
           wget -qO- 'https://raw.githubusercontent.com/xplshn/dbin/master/stubdl' | sh -s -- --install \$DBIN_INSTALL_DIR/dbin add tar wget yq jq xq && \
-          ls '/workdir/baseSystems' && \
-          export PATH='/workdir/baseSystems:\$PATH' && \
+          ls '/${GITHUB_WORKSPACE}/baseSystems' && \
+          export PATH='/${GITHUB_WORKSPACE}/baseSystems:\$PATH' && \
           echo 'PATH=\$PATH' >> \$GITHUB_ENV && \
           cd \$OUT_DIR && \
           SCRIPT_PATTERN=\"\${{ github.event.inputs.script_pattern }}\" && \
@@ -68,7 +68,7 @@ jobs:
           else \
           PATTERN='\$SCRIPT_PATTERN' ; \
           fi && \
-          for script in '/workdir/recipes/'*/*.*sh; do \
+          for script in '/${GITHUB_WORKSPACE}/recipes/'*/*.*sh; do \
           if echo \"\$script\" | grep -E \"\$PATTERN\"; then \
           chmod +x \"\$script\" && \
           DEBUG=1 \"\$script\" ; \
@@ -77,8 +77,8 @@ jobs:
           TAG_NAME=\"v\${GITHUB_RUN_NUMBER}-\$(date +'%Y%m%d%H%M%S')\" && \
           echo \"\$TAG_NAME\" > tag_name.txt && \
           echo 'TAG_NAME=\$TAG_NAME' >> \$GITHUB_ENV && \
-          OUT_DIR='/workdir/AppDir' && \
-          META_OUT_DIR='/workdir/APPBUNDLES_META' && \
+          OUT_DIR='/${GITHUB_WORKSPACE}/AppDir' && \
+          META_OUT_DIR='/${GITHUB_WORKSPACE}/APPBUNDLES_META' && \
           mkdir -p \$OUT_DIR \$META_OUT_DIR && \
           echo 'OUT_DIR=\$OUT_DIR' >> \$GITHUB_ENV && \
           echo 'META_OUT_DIR=\$META_OUT_DIR' >> \$GITHUB_ENV"
