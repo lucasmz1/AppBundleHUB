@@ -44,6 +44,7 @@ jobs:
           echo 'GOBIN=\$GOBIN' >> \$GITHUB_ENV && \
           echo 'PATH=\$GOBIN:\$PATH' >> \$GITHUB_ENV && \
           git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
+          ls -R ./pelf && \
           cp -R ./pelf/* \$GOBIN || true && \
           cd ./pelf/cmd/dynexec/lib4bin && \
           go install . && \
@@ -78,6 +79,7 @@ jobs:
           mkdir -p \$OUT_DIR \$META_OUT_DIR && \
           echo 'OUT_DIR=\$OUT_DIR' >> \$GITHUB_ENV && \
           echo 'META_OUT_DIR=\$META_OUT_DIR' >> \$GITHUB_ENV"
+
 
 
       - name: Checkout repository
