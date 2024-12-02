@@ -37,7 +37,7 @@ jobs:
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
           docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge sh -c "
           apk update && \
-          apk add --no-cache tar wget findutils binutils && \
+          apk add --no-cache tar wget findutils binutils go && \
           find -iname 'arch_armv7' | xargs -i -t -exec chmod +x {} && \
           export GOBIN='/workdir/.local/bin' && \
           mkdir -p \$GOBIN && \
