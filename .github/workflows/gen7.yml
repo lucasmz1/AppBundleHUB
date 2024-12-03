@@ -32,11 +32,12 @@ jobs:
           docker buildx create --name mybuilder --use
           docker buildx inspect --bootstrap
 
-      - name: Pull ARM Image
+     Você disse:
+olá estou tendo um erro inesperado neste código ache para mim       - name: Pull ARM Image
         run: |
           docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
           docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge sh -c "
-          export HOME2=/workdir
+          export HOME=/workdir
           set -x && \
           set -e && \
           apk update && \
@@ -83,6 +84,90 @@ jobs:
           mkdir -p \$OUT_DIR \$META_OUT_DIR && \
           echo 'OUT_DIR=\$OUT_DIR' && \
           echo 'META_OUT_DIR=\$META_OUT_DIR'
+O ChatGPT disse:
+ChatGPT
+
+Olá! Pelo que você descreveu, você está enfrentando um erro inesperado no seu código de execução de um container Docker com a arquitetura ARM. Para te ajudar a depurar o erro, vamos revisar algumas possíveis causas e ajustar o código conforme necessário.
+Passos para Diagnóstico:
+
+    Verifique se o Docker está configurado corretamente para ARM:
+        O comando docker pull --platform=linux/arm/v7 deve funcionar corretamente se você estiver em um ambiente que suporte a arquitetura ARM, mas se você estiver executando em uma máquina x86, pode ser necessário usar emuladores como qemu para rodar ARM em x86.
+
+    Verifique se a plataforma está disponível:
+        Algumas plataformas (como arm32v7/alpine:edge) podem não estar bem suportadas ou disponíveis. Tente verificar se a imagem arm32v7/alpine:edge está realmente acessível.
+
+    Erros comuns de execução de comandos em containers Docker:
+        Variáveis de ambiente: Em alguns momentos do seu script, você está usando variáveis de ambiente de maneira que pode gerar problemas de substituição incorreta, como em export GOBIN='$HOME2/.local/bin'. Para garantir que elas sejam corretamente interpretadas dentro do container, prefira usar as aspas duplas (") em vez das aspas simples (').
+
+    Potenciais erros no comando apk:
+        Certifique-se de que a lista de pacotes que você está tentando instalar esteja disponível no repositório do Alpine. Pode ser que o comando apk add falhe se algum pacote não existir ou não for compatível com a arquitetura ARM.
+
+    Erro nos caminhos do sistema de arquivos:
+        O uso de caminhos absolutos com variáveis pode gerar erros dependendo da forma como o Docker monta os volumes. Por exemplo, você usa /workdir e $HOME2, que pode estar sendo expandido de forma errada. Tente usar sempre caminhos relativos quando possível e certifique-se de que as variáveis estejam sendo corretamente expandidas dentro do container.
+
+Algumas sugestões de ajustes no seu código:
+
+    Corrigir a expansão de variáveis no Docker: Troque os export e as variáveis com '$' (aspas simples) para "$" (aspas duplas), para garantir que as variáveis sejam expandidas corretamente dentro do container Docker.
+
+    Melhorar o uso de caminhos: Use variáveis de ambiente para representar caminhos, mas garanta que elas sejam expandidas corretamente dentro do contexto do shell.
+
+    Ajustar o uso de diretórios e comandos chmod: Quando você está usando chmod +x no script find, a maneira como você está utilizando o xargs pode gerar problemas se não houver arquivos que correspondem ao padrão. Certifique-se de que o comando find está retornando resultados válidos.
+
+Código Ajustado
+
+Aqui está uma versão ajustada do seu código com as sugestões aplicadas:
+
+- name: Pull ARM Image
+  run: |
+    docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
+    docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge sh -c "
+      export HOME2=/workdir
+      set -x && \
+      set -e && \
+      apk update && \
+      apk add --no-cache tar wget findutils binutils git curl go && \
+      find -iname 'arch_armv7' | tee /dev/stderr | xargs -i -t chmod +x {} && \
+      mkdir -p \$HOME2/.local/bin && \
+      export GOBIN=\$HOME2/.local/bin && \
+      echo \"GOBIN=\$GOBIN\" && \
+      echo \"PATH=\$GOBIN:\$PATH\" && \
+      git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
+      ls -R ./pelf && \
+      cp -R ./pelf/* \$GOBIN || true && \
+      cp ./pelf/* \$GOBIN || true && \
+      cd ./pelf/cmd/dynexec/lib4bin && \
+      go install . && \
+      cd - && \
+      cd ./pelf/cmd/misc/appstream_helper && \
+      go install . && \
+      export DBIN_INSTALL_DIR=\$GOBIN && \
+      echo \"DBIN_INSTALL_DIR=\$DBIN_INSTALL_DIR\" && \
+      wget -qO- 'https://raw.githubusercontent.com/xplshn/dbin/master/stubdl' | sh -s -- --install \$DBIN_INSTALL_DIR/dbin add tar wget yq jq xq && \
+      ls \"\$HOME2/baseSystems\" && \
+      export PATH=\"\$HOME2/baseSystems:\$PATH\" && \
+      echo \"PATH=\$PATH\" && \
+      cd \$OUT_DIR && \
+      SCRIPT_PATTERN=\"\${{ github.event.inputs.script_pattern }}\" && \
+      if [ -z \"\$SCRIPT_PATTERN\" ]; then \
+        echo 'No script pattern provided, running all scripts.' && \
+        PATTERN='.*' ; \
+      else \
+        PATTERN=\$SCRIPT_PATTERN ; \
+      fi && \
+      for script in \"\$HOME2/recipes\"/*/*.*sh; do \
+        if echo \"\$script\" | grep -E \"\$PATTERN\"; then \
+          chmod +x \"\$script\" && \
+          DEBUG=1 \"\$script\" ; \
+        fi ; \
+      done && \
+      TAG_NAME=\"v\${GITHUB_RUN_NUMBER}-\$(date +'%Y%m%d%H%M%S')\" && \
+      echo \"\$TAG_NAME\" > tag_name.txt && \
+      echo \"TAG_NAME=\$TAG_NAME\" && \
+      OUT_DIR=\$GITHUB_WORKSPACE/AppDir && \
+      META_OUT_DIR=\$GITHUB_WORKSPACE/APPBUNDLES_META && \
+      mkdir -p \$OUT_DIR \$META_OUT_DIR && \
+      echo \"OUT_DIR=\$OUT_DIR\" && \
+      echo \"META_OUT_DIR=\$META_OUT_DIR\"
 
 
 
