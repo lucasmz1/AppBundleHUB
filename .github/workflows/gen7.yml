@@ -56,8 +56,8 @@ jobs:
          cd - && \
          cd ./pelf/cmd/misc/appstream_helper && \
          go install . && \
-         ls \"\$HOME2/baseSystems\" && \
-         export PATH=\"\$HOME2/baseSystems:\$PATH\" && \
+         ls \"\${GITHUB_WORKSPACE}/baseSystems\" && \
+         export PATH=\"\${GITHUB_WORKSPACE}/baseSystems:\$PATH\" && \
          echo \"PATH=\$PATH\" && \
          cd \$OUT_DIR && \
          SCRIPT_PATTERN=\"\${{ github.event.inputs.script_pattern }}\" && \
@@ -67,7 +67,7 @@ jobs:
          else \
          PATTERN=\$SCRIPT_PATTERN ; \
          fi && \
-         for script in \"\$HOME2/recipes\"/*/*.*sh; do \
+         for script in \"\${GITHUB_WORKSPACE}/recipes\"/*/*.*sh; do \
          if echo \"\$script\" | grep -E \"\$PATTERN\"; then \
          chmod +x \"\$script\" && \
          DEBUG=1 \"\$script\" ; \
