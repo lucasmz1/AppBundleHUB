@@ -35,9 +35,9 @@ jobs:
       - name: Pull ARM Image
         run: |
          docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-         docker run --rm --privileged --platform=linux/arm/v7 ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} -w ${GITHUB_WORKSPACE} arm32v7/alpine:edge sh -c "
-         export HOME2=/workdir
-         cp -a ${GITHUB_WORKSPACE}/* "${GITHUB_WORKSPACE}/"
+         docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} -w ${GITHUB_WORKSPACE} arm32v7/alpine:edge sh -c "
+         echo 'Accessing GITHUB_WORKSPACE:'
+         ls -l ${GITHUB_WORKSPACE}
          set -x && \
          set -e && \
          apk update && \
