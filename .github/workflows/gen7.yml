@@ -56,7 +56,6 @@ jobs:
          cd - && \
          cd ./pelf/cmd/misc/appstream_helper && \
          go install . && \
-         ls \"\${GITHUB_WORKSPACE}/baseSystems\" && \
          export PATH=\"\${GITHUB_WORKSPACE}/baseSystems:\$PATH\" && \
          echo \"PATH=\$PATH\" && \
          cd \$OUT_DIR && \
