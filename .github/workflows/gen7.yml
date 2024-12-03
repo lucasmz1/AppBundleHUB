@@ -40,7 +40,7 @@ jobs:
          set -x && \
          set -e && \
          apk update && \
-         apk add --no-cache tar wget findutils binutils git curl go yq jq xq && \
+         apk add --no-cache tar wget findutils binutils git curl go && \
          find -iname 'arch_armv7' | tee /dev/stderr | xargs -i -t chmod +x {} && \
          mkdir -p \$HOME/.local/bin && \
          export GOBIN=\$HOME/.local/bin && \
@@ -55,9 +55,6 @@ jobs:
          cd - && \
          cd ./pelf/cmd/misc/appstream_helper && \
          go install . && \
-         export DBIN_INSTALL_DIR=\$GOBIN && \
-         echo \"DBIN_INSTALL_DIR=\$DBIN_INSTALL_DIR\" && \
-         #wget -qO- 'https://raw.githubusercontent.com/xplshn/dbin/master/stubdl' | sh -s -- --install \$DBIN_INSTALL_DIR/dbin add tar wget yq jq xq && \
          ls \"\$HOME/baseSystems\" && \
          export PATH=\"\$HOME/baseSystems:\$PATH\" && \
          echo \"PATH=\$PATH\" && \
