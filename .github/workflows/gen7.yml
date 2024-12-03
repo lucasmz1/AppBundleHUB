@@ -35,16 +35,16 @@ jobs:
       - name: Pull ARM Image
         run: |
          docker pull --platform=linux/arm/v7 arm32v7/alpine:edge
-         docker run --rm --privileged --platform=linux/arm/v7 -v $(pwd):/workdir arm32v7/alpine:edge sh -c "
+         docker run --rm --privileged --platform=linux/arm/v7 ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} -w ${GITHUB_WORKSPACE} arm32v7/alpine:edge sh -c "
          export HOME2=/workdir
-         cp -a ${GITHUB_WORKSPACE}/* "$HOME2/"
+         cp -a ${GITHUB_WORKSPACE}/* "${GITHUB_WORKSPACE}/"
          set -x && \
          set -e && \
          apk update && \
          apk add --no-cache tar wget coreutils findutils binutils git curl go && \
          find -iname 'arch_armv7' | tee /dev/stderr | xargs -i -t chmod +x {} && \
-         mkdir -p \$HOME2/.local/bin && \
-         export GOBIN=\$HOME2/.local/bin && \
+         mkdir -p \${GITHUB_WORKSPACE}/.local/bin && \
+         export GOBIN=\${GITHUB_WORKSPACE}/.local/bin && \
          echo \"GOBIN=\$GOBIN\" && \
          echo \"PATH=\$GOBIN:\$PATH\" && \
          git clone --depth 1 --branch dev https://github.com/xplshn/pelf && \
