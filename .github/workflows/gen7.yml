@@ -83,6 +83,7 @@ jobs:
          mkdir -p \$OUT_DIR \$META_OUT_DIR && \
          echo \"OUT_DIR=\$OUT_DIR\" && \
          echo \"META_OUT_DIR=\$META_OUT_DIR\"
+         "
 
 
       - name: Checkout repository
